@@ -35,7 +35,9 @@ async function run() {
       res.send(result);
   })
 
-
+  app.get('/ahad' , async(req, res)=>{
+    res.send('Pinged');
+  })
 
 
 
