@@ -28,6 +28,14 @@ async function run() {
 
     const artCraftCollection = client.db('artCraftDB').collection('artCraft');
 
+
+    app.get('/artCraft', async (req, res) => {
+      const cursor = artCraftCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+  })
+
+
     app.post('/addArtCraftItem', async (req, res) => {
       const newArtCraft = req.body;
       console.log(newArtCraft);
@@ -35,9 +43,7 @@ async function run() {
       res.send(result);
   })
 
-  app.get('/ahad' , async(req, res)=>{
-    res.send('Pinged');
-  })
+
 
 
 
