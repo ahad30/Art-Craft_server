@@ -30,23 +30,56 @@ async function run() {
 
 
     app.get('/artCraft', async (req, res) => {
-      const cursor = artCraftCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
-  })
+      try {
+        const cursor = artCraftCollection.find();
+        const result = await cursor.toArray();
+        res.send(result);
+      }
+      catch (error) {
+        res.status(500).send({ message: "some thing went wrong" })
+      }
+    })
+
+
+    app.get('/artCraft/:id', async (req, res) => {
+      try {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) }
+        const result = await artCraftCollection.findOne(query);
+        res.send(result);
+      }
+      catch (error) {
+        res.status(500).send({ message: "some thing went wrong" })
+      }
+    })
+
+
+
+    app.get("/artCraft/:email", async (req, res) => {
+      try {
+        console.log(req.params.email);
+        const result = await artCraftCollection.find({ email: req.params.email }).toArray();
+        res.send(result)
+      }
+      catch (error) {
+        res.status(500).send({ message: "some thing went wrong" })
+      }
+
+    })
+
 
 
     app.post('/addArtCraftItem', async (req, res) => {
-      const newArtCraft = req.body;
-      console.log(newArtCraft);
-      const result = await artCraftCollection.insertOne(newArtCraft);
-      res.send(result);
-  })
-
-
-
-
-
+      try {
+        const newArtCraft = req.body;
+        console.log(newArtCraft);
+        const result = await artCraftCollection.insertOne(newArtCraft);
+        res.send(result);
+      }
+      catch (error) {
+        res.status(500).send({ message: "some thing went wrong" })
+      }
+    })
 
 
 
@@ -68,9 +101,9 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
-    res.send('Art and Craft server')
+  res.send('Art and Craft server')
 })
 
 app.listen(port, () => {
-    console.log(`Coffee Server is running on port: ${port}`)
+  console.log(`Coffee Server is running on port: ${port}`)
 })
