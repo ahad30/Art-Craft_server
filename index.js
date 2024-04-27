@@ -55,10 +55,11 @@ async function run() {
 
 
 
-    app.get("/artCraft/:email", async (req, res) => {
-      try {
-        console.log(req.params.email);
-        const result = await artCraftCollection.find({ email: req.params.email }).toArray();
+    app.get("/myArtCraft/:email", async (req, res) => {
+    try {
+      console.log(req.params.email);
+      const result = await artCraftCollection.find({ userEmail: req.params.email }).toArray();
+        console.log(result)
         res.send(result)
       }
       catch (error) {
@@ -82,8 +83,12 @@ async function run() {
     })
 
 
-
-
+    app.delete('/deleteItem/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await artCraftCollection.deleteOne(query);
+      res.send(result);
+  })
 
 
 
