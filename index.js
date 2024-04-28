@@ -83,11 +83,46 @@ async function run() {
     })
 
 
-    app.delete('/deleteItem/:id', async (req, res) => {
+    app.put('/updateItem/:id', async (req, res) => {
       const id = req.params.id;
-      const query = { _id: new ObjectId(id) }
-      const result = await artCraftCollection.deleteOne(query);
+      const filter = { _id: new ObjectId(id) }
+      const options = { upsert: true };
+      const updatedItem = req.body;
+      
+      const item = {
+          $set: {
+            image: updatedItem.image,
+            itemName: updatedItem.itemName,
+            subcategoryName: updatedItem.subcategoryName,
+            shortDescription: updatedItem.shortDescription,
+            price: updatedItem.price,
+            rating: updatedItem.rating,
+            customization: updatedItem.customization,
+            processingTime: updatedItem.processingTime,
+            stockStatus: updatedItem.stockStatus
+          }
+      }
+
+      const result = await artCraftCollection.updateOne(filter, item, options);
       res.send(result);
+  })
+
+
+
+
+
+
+
+    app.delete('/deleteItem/:id', async (req, res) => {
+   try{
+    const id = req.params.id;
+    const query = { _id: new ObjectId(id) }
+    const result = await artCraftCollection.deleteOne(query);
+    res.send(result);
+   }
+   catch (error) {
+    res.status(500).send({ message: "some thing went wrong" })
+  }
   })
 
 
