@@ -5,9 +5,11 @@ const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 5000;
 
+
 // middleware
 app.use(cors());
 app.use(express.json());
+
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.qxclpw1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -24,9 +26,10 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const artCraftCollection = client.db('artCraftDB').collection('artCraft');
+
 
 
     app.get('/artCraft', async (req, res) => {
@@ -110,9 +113,6 @@ async function run() {
 
 
 
-
-
-
     app.delete('/deleteItem/:id', async (req, res) => {
    try{
     const id = req.params.id;
@@ -138,8 +138,7 @@ async function run() {
 }
 run().catch(console.dir);
 
-
-
+ 
 app.get('/', (req, res) => {
   res.send('Art and Craft server')
 })
