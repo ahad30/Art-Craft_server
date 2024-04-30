@@ -134,7 +134,7 @@ app.get('/artCraftSubcategory', async (req , res) => {
   catch (error) {
     res.status(500).send({ message: "some thing went wrong" })
   }
-})
+})                    
 
 
 app.get('/artCraftSubcategory/:id', async (req, res) => {
