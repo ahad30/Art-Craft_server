@@ -137,17 +137,17 @@ app.get('/artCraftSubcategory', async (req , res) => {
 })                    
 
 
-app.get('/artCraftSubcategory/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-    const query = { _id: new ObjectId(id) }
-    const result = await SubcategoryCollection.findOne(query);
-    res.send(result);
-  }
-  catch (error) {
-    res.status(500).send({ message: "some thing went wrong" })
-  }
-})
+  app.get('/artCraftSubcategory/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await SubcategoryCollection.findOne(query);
+      res.send(result);
+    }
+    catch (error) {
+      res.status(500).send({ message: "some thing went wrong" })
+    }
+  })
 
 
 
