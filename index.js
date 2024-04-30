@@ -29,10 +29,11 @@ async function run() {
     // await client.connect();
 
     const artCraftCollection = client.db('artCraftDB').collection('artCraft');
+    const SubcategoryCollection = client.db('artCraftSubcategoryDB').collection('artCraftSubcategory');
 
 
 
-    app.get('/artCraft', async (req, res) => {
+    app.get('/artCraft', async (req , res) => {
       try {
         const cursor = artCraftCollection.find();
         const result = await cursor.toArray();
@@ -90,8 +91,7 @@ async function run() {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) }
       const options = { upsert: true };
-      const updatedItem = req.body;
-      
+      const updatedItem = req.body;   
       const item = {
           $set: {
             image: updatedItem.image,
@@ -110,9 +110,6 @@ async function run() {
       res.send(result);
   })
 
-
-
-
     app.delete('/deleteItem/:id', async (req, res) => {
    try{
     const id = req.params.id;
@@ -125,6 +122,32 @@ async function run() {
   }
   })
 
+
+// Art & Craft SubCategory Section
+
+app.get('/artCraftSubcategory', async (req , res) => {
+  try {
+    const cursor = SubcategoryCollection.find();
+    const result = await cursor.toArray();
+    res.send(result);
+  }
+  catch (error) {
+    res.status(500).send({ message: "some thing went wrong" })
+  }
+})
+
+
+app.get('/artCraftSubcategory/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const query = { _id: new ObjectId(id) }
+    const result = await SubcategoryCollection.findOne(query);
+    res.send(result);
+  }
+  catch (error) {
+    res.status(500).send({ message: "some thing went wrong" })
+  }
+})
 
 
 
@@ -144,5 +167,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Coffee Server is running on port: ${port}`)
+  console.log(`Art & Craft Server is running on port: ${port}`)
 })
