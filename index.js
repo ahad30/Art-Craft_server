@@ -151,6 +151,42 @@ app.get('/artCraftSubcategory', async (req , res) => {
 
 
 
+  // Add this endpoint to fetch subcategories with associated examples
+app.get('/artCraftSubcategories/:subcategoryName', async (req, res) => {
+  try {
+    const subcategoryName = req.params.subcategoryName;
+
+    // Fetch the subcategory based on the name
+    const subcategoryQuery = { subcategoryName };
+    const subcategory = await SubcategoryCollection.findOne(subcategoryQuery);
+
+    if (!subcategory) {
+      return res.status(404).send({ message: 'Subcategory not found' });
+    }
+
+    // Fetch art and craft items that match the subcategory name
+    const artCraftQuery = { subcategoryName };
+    const artCraftExamples = await artCraftCollection.find(artCraftQuery).limit(6).toArray();
+
+    // console.log('Found subcategory:', subcategory); // Log the subcategory details
+    // console.log('Art & Craft Examples:', artCraftExamples); // Log the examples
+
+    // Construct the response
+    const result = {
+      ...subcategory,
+      examples: artCraftExamples,
+    };
+    console.log(result)
+
+    res.send(result);
+  } catch (error) {
+    res.status(500).send({ message: 'Something went wrong', error: error.message });
+  }
+});
+
+
+
+
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
